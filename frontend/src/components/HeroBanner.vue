@@ -1,17 +1,25 @@
 <script setup>
-defineProps({
+import { useRouter } from 'vue-router';
+
+const props = defineProps({
   movie: { type: Object, required: true },
 });
+
+const router = useRouter();
+const goToDetail = () => router.push(`/movies/${props.movie._id}`);
+const play = () => {
+  if (props.movie.videoUrl) window.open(props.movie.videoUrl, '_blank');
+};
 </script>
 
 <template>
-  <header class="hero" :style="{ backgroundImage: `url(${movie.bannerImg})` }">
+  <header class="hero" :style="{ backgroundImage: `url(${movie.bannerImg || movie.coverImg})` }">
     <div class="content">
       <h1>{{ movie.title }}</h1>
       <p>{{ movie.description }}</p>
       <div class="buttons">
-        <button class="play">▶ Play</button>
-        <button class="info">ⓘ Más información</button>
+        <button class="play" @click="play">▶ Play</button>
+        <button class="info" @click="goToDetail">ⓘ Más información</button>
       </div>
     </div>
   </header>
